@@ -3,30 +3,28 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h2>All Posts</h2>
-  {% if posts %}
-    <div class="list-group">
-      {% for post in posts %}
-        <div class="list-group-item mb-3">
-          <h5>{{ post.title }}</h5>
-          <p>{{ post.content }}</p>
-          <small>By {{ post.owner.username }}</small>
-          {% if "user" in session and post.owner.username == session["user"] %}
-            <div class="mt-2 d-flex gap-2">
-              <!-- Edit Button -->
-              <a href="{{ url_for('edit_blog', post_id=post.id) }}" class="btn btn-outline-dark btn-sm">Edit</a>
-              
-              <!-- Delete Button -->
-              <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-              </form>
-            </div>
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p>No posts yet.</p>
-  {% endif %}
-{% endblock %}
+<h2>All Posts</h2>
 
+{% if posts %}
+  <div class="list-group">
+    {% for post in posts %}
+      <div class="list-group-item mb-3">
+        <h5>{{ post.title }}</h5>
+        <p>{{ post.content }}</p>
+        <small>By {{ post.user.username }}</small>
+
+        {% if "user" in session and post.user.username == session["user"] %}
+          <div class="mt-2 d-flex gap-2">
+            <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-outline-dark btn-sm">Edit</a>
+            <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post" style="display:inline;">
+              <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No posts yet.</p>
+{% endif %}
+{% endblock %}
